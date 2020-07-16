@@ -5,20 +5,10 @@ using Sandbox.Extensions;
 
 namespace Sandbox.Util
 {
-    public class Cache<TKey, TValue>
+    public class Cache<TKey, TValue> : ICache<TKey, TValue>
     {
         private readonly Func<TKey, TValue> _createNewItem;
         private readonly IDictionary<TKey, TValue> _items;
-
-        /// <summary>
-        /// Creates a cache backed by a non thread-safe collection. Use this for cases
-        /// when multi-threading is not required as the overhead required for thread
-        /// safety can reduce performance.
-        /// </summary>
-        /// <param name="createNewItem">Function that generates a new item on a cache miss</param>
-        public Cache(Func<TKey, TValue> createNewItem) : this(createNewItem, false)
-        {
-        }
 
         /// <summary>
         /// Creates a cache backed by a collection that can be either thread-safe or
@@ -27,7 +17,7 @@ namespace Sandbox.Util
         /// </summary>
         /// <param name="createNewItem">Function that generates a new item on a cache miss</param>
         /// <param name="threadSafe">setting to indicate thread-safe requirement</param>
-        public Cache(Func<TKey, TValue> createNewItem, bool threadSafe)
+        public Cache(Func<TKey, TValue> createNewItem, bool threadSafe = false)
         {
             _createNewItem = createNewItem;
             _items = threadSafe
