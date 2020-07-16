@@ -46,5 +46,24 @@ namespace Sandbox.Util
                 return newItem;
             });
         }
+        
+        /// <summary>
+        /// Invalidates the entire cache. Subsequent calls to Get will generate
+        /// new items.
+        /// </summary>
+        public void Invalidate()
+        {
+            _items.Clear();
+        }
+
+        /// <summary>
+        /// Invalidates only the entry for the specified key. Other keys
+        /// will not be cleared.
+        /// </summary>
+        /// <param name="key"></param>
+        public void Invalidate(TKey key)
+        {
+            _items.Remove(key);
+        }
     }
 }

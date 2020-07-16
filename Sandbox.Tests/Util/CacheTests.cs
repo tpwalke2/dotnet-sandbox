@@ -9,10 +9,7 @@ namespace Sandbox.Tests.Util
         [Test]
         public void CacheMissGeneratesNewItem()
         {
-            var underTest = new Cache<string, CacheTestType>(s =>
-            {
-                return new CacheTestType();
-            });
+            var underTest = new Cache<string, CacheTestType>(s => new CacheTestType());
 
             var result = underTest.Get("input");
             Assert.That(result, Is.Not.Null);
@@ -36,6 +33,71 @@ namespace Sandbox.Tests.Util
             Assert.That(cacheValueGeneratorCalled, Is.EqualTo(1));
         }
         
+        [Test]
+        public void DifferentKeyGeneratesSeparateItem()
+        {
+            var cacheValueGeneratorCalled = 0;
+
+            var underTest = new Cache<string, CacheTestType>(s =>
+            {
+                cacheValueGeneratorCalled++;
+                return new CacheTestType();
+            });
+
+            var result1 = underTest.Get("input1");
+            var result2 = underTest.Get("input2");
+            Assert.That(result1, Is.Not.Null);
+            Assert.That(result2, Is.Not.Null);
+            Assert.That(result1, Is.Not.SameAs(result2));
+            Assert.That(cacheValueGeneratorCalled, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void CacheInvalidateShouldAllowGeneratingNewItem()
+        {
+            var cacheValueGeneratorCalled = 0;
+
+            var underTest = new Cache<string, CacheTestType>(s =>
+            {
+                cacheValueGeneratorCalled++;
+                return new CacheTestType();
+            });
+
+            var result1 = underTest.Get("input");
+            underTest.Invalidate();
+            var result2 = underTest.Get("input");
+            Assert.That(result1, Is.Not.Null);
+            Assert.That(result2, Is.Not.Null);
+            Assert.That(result1, Is.Not.SameAs(result2));
+            Assert.That(cacheValueGeneratorCalled, Is.EqualTo(2));
+        }
+        
+        [Test]
+        public void InvalidateKeyDoesNotInvalidateAllKeys()
+        {
+            var underTest = new Cache<string, CacheTestType>(s => new CacheTestType());
+
+            var result1 = underTest.Get("input1");
+            var result2 = underTest.Get("input2");
+            underTest.Invalidate("input1");
+            var result3 = underTest.Get("input1");
+            var result4 = underTest.Get("input2");
+            
+            Assert.That(result1, Is.Not.Null);
+            Assert.That(result2, Is.Not.Null);
+            Assert.That(result3, Is.Not.Null);
+            Assert.That(result4, Is.Not.Null);
+            Assert.That(result1, Is.Not.SameAs(result3));
+            Assert.That(result2, Is.SameAs(result4));
+        }
+
+        [Test]
+        public void InvalidateInvalidKey()
+        {
+            var underTest = new Cache<string, CacheTestType>(s => new CacheTestType());
+            Assert.That(() => underTest.Invalidate("input"), Throws.Nothing);
+        }
+
         [Test]
         public void GeneratedNullShouldNotBeAddedToCache()
         {
