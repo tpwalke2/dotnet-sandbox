@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Net6APIBoilerplate.Plumbing.Extensions;
+using Net6APIBoilerplate.Plumbing.Validation;
 
-namespace Sandbox.Util;
+namespace Net6APIBoilerplate.Plumbing.Helpers;
 
 public static class TypeHelpers
 {
@@ -13,9 +15,17 @@ public static class TypeHelpers
                from attr in t.GetCustomAttributes(typeof(TAttr), false)
                select ((TAttr) attr, t);
     }
+
+    public static IEnumerable<Type> GetConstructorParameterTypes<T>() where T : class
+    {
+        return typeof(T).GetConstructorParameterTypes();
+    }
         
     public static IEnumerable<(Type, Type)> GetAllImplementingTypes(Type type)
     {
+        if (!type.IsInterface && !type.IsGenericType)
+            throw new InvalidArgumentsException("Type must be a generic interface");
+
         return GetAllTypesInheritedFromType(type)
             .SelectMany(t => t
                              .GetInterfaces()
@@ -23,7 +33,7 @@ public static class TypeHelpers
                              .Select(i => (i, t)));
     }
 
-    private static IEnumerable<Type> GetAllTypesInheritedFromType(Type type)
+    public static IEnumerable<Type> GetAllTypesInheritedFromType(Type type)
     {
         return AppDomain.CurrentDomain.GetAssemblies()
                         .SelectMany(s => s.GetTypes())

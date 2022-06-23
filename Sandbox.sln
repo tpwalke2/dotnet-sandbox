@@ -4,9 +4,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Tests", "Sandbox.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{CCDC1F03-176F-468B-A04B-FC25739C3E17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net5.0APIBoilerplate", "Net5.0APIBoilerplate\Net5.0APIBoilerplate.csproj", "{F8D4AE86-7570-4B12-AED8-80CBB9AE06D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net6APIBoilerplate", "Net6APIBoilerplate\Net6APIBoilerplate.csproj", "{F8D4AE86-7570-4B12-AED8-80CBB9AE06D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net5.0APIBoilerPlate.Tests", "Net5.0APIBoilerPlate.Tests\Net5.0APIBoilerPlate.Tests.csproj", "{D8E26709-297C-4F04-9AC8-C9976A2D4AB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net6APIBoilerPlate.Tests", "Net6APIBoilerPlate.Tests\Net6APIBoilerPlate.Tests.csproj", "{D8E26709-297C-4F04-9AC8-C9976A2D4AB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

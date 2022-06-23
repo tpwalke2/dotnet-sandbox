@@ -2,20 +2,24 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>Net6APIBoilerPlate.Tests</RootNamespace>
 
         <IsPackable>false</IsPackable>
 
         <LangVersion>10</LangVersion>
+
+        <AssemblyName>Net6APIBoilerPlate.Tests</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="nunit" Version="3.13.3" />
+        <PackageReference Include="Moq" Version="4.18.1" />
+        <PackageReference Include="NUnit" Version="3.13.3" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Sandbox\Sandbox.csproj" />
+      <ProjectReference Include="..\Net6APIBoilerplate\Net6APIBoilerplate.csproj" />
     </ItemGroup>
 
 </Project>

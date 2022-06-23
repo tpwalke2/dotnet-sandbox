@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 
-namespace Sandbox.Extensions;
+namespace Net6APIBoilerplate.Plumbing.Extensions;
 
 public static class ObjectExtensions
 {
@@ -13,10 +12,5 @@ public static class ObjectExtensions
     public static void Pipe<T>(this T value, Action<T> pipeFunction)
     {
         pipeFunction(value);
-    }
-
-    public static bool IsDefault<T>(this T value)
-    {
-        return EqualityComparer<T>.Default.Equals(value, default);
     }
 }
