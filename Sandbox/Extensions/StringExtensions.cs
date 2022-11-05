@@ -11,14 +11,21 @@ public static class StringExtensions
     
     private static int GetLuhnCheckDigit(this string input) {
         var sum = 0;
+        // skip last character by starting at 2 and walking backwards
         for (var i = 2; i <= input.Length; i++) {
+            // walk backwards through string
             var index        = input.Length - i;
+            // multiply by 2 if even index; identity if odd index
             var multiplier   = i % 2 == 0 ? 2 : 1;
+            // assume ascii digits and subtract 48 from value of character
             var currentValue = (input[index] - 48) * multiplier;
-            sum += currentValue % 10;
-            if (currentValue >= 10) sum++;
+            // cast out the 9s if appropriate and accumulate sum
+            sum += currentValue > 9
+                ? currentValue - 9
+                : currentValue;
         }
 
+        // perform mod 10 calculation
         return (10 - sum % 10) % 10;
     }
 }
