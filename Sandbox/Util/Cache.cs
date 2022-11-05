@@ -21,7 +21,7 @@ public class Cache<TKey, TValue> : ICache<TKey, TValue>
     {
         _createNewItem = createNewItem;
         _items = threadSafe
-            ? (IDictionary<TKey, TValue>) new ConcurrentDictionary<TKey, TValue>()
+            ? new ConcurrentDictionary<TKey, TValue>()
             : new Dictionary<TKey, TValue>();
     }
 
