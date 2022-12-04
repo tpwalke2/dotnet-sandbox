@@ -16,7 +16,7 @@ public class EnumerableExtensionsTests
 
         var result = list1.Combinate(list2);
             
-        Assert.That(result, Is.Null);
+        Assert.That(result, Is.Empty);
     }
         
     [Test]
@@ -27,7 +27,7 @@ public class EnumerableExtensionsTests
 
         var result = list2.Combinate(list1);
             
-        Assert.That(result, Is.Null);
+        Assert.That(result, Is.Empty);
     }
 
     [Test]

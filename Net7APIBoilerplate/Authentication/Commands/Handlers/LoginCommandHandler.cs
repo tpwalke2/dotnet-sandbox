@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,6 +72,6 @@ public class LoginCommandHandler: ICommandHandler<LoginCommand, LoginResponse>
     private async Task EnsureValidCredentials(ApplicationUser user, string password)
     {
         if (user == null || !await _userManager.CheckPasswordAsync(user, password))
-            throw new InvalidCredentialsException();
+            throw new InvalidCredentialException();
     }
 }

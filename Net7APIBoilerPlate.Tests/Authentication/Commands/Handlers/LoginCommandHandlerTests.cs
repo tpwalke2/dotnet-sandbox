@@ -8,6 +8,7 @@ using Net7APIBoilerplate.Authentication.Helpers;
 using Net7APIBoilerplate.ConfigurationModels;
 using Net7APIBoilerPlate.Tests.Plumbing.UnitTesting;
 using NUnit.Framework;
+using System.Security.Authentication;
 
 namespace Net7APIBoilerPlate.Tests.Authentication.Commands.Handlers;
 
@@ -48,7 +49,7 @@ public class LoginCommandHandlerTests : UnitTestFixture<LoginCommandHandler>
         _userManager
             .Setup(x => x.FindByNameAsync("User1"))
             .ReturnsAsync(() => default);
-        Assert.ThrowsAsync<InvalidCredentialsException>(async () => await UnderTest.Handle(_command));
+        Assert.ThrowsAsync<InvalidCredentialException>(async () => await UnderTest.Handle(_command));
     }
         
     [Test]
@@ -62,6 +63,6 @@ public class LoginCommandHandlerTests : UnitTestFixture<LoginCommandHandler>
             .Setup(x => x.CheckPasswordAsync(_user, "Password123!"))
             .ReturnsAsync(false);
             
-        Assert.ThrowsAsync<InvalidCredentialsException>(async () => await UnderTest.Handle(_command));
+        Assert.ThrowsAsync<InvalidCredentialException>(async () => await UnderTest.Handle(_command));
     }
 }

@@ -18,7 +18,7 @@ public static class EnumerableExtensions
         this IEnumerable<TItem1> source,
         IEnumerable<TItem2> other)
     {
-        if (other == null || source == null) return null;
+        if (other == null || source == null) return Enumerable.Empty<(TItem1, TItem2)>();
 
         IEnumerable<(TItem1, TItem2)> seed = new (TItem1, TItem2)[] {};
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Net7APIBoilerplate.Authentication.Commands;
 using Net7APIBoilerplate.Plumbing.Commands;
 using Net7APIBoilerplate.Plumbing.Validation;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace Net7APIBoilerplate.Authentication;
@@ -32,7 +33,7 @@ public class AuthenticateController : ControllerBase
                 ? Ok(result.Result)
                 : Unauthorized();
         }
-        catch (InvalidCredentialsException)
+        catch (InvalidCredentialException)
         {
             return Unauthorized();
         }
