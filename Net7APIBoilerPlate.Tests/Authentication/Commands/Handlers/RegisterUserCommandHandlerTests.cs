@@ -23,14 +23,14 @@ public class RegisterUserCommandHandlerTests : UnitTestFixture<RegisterUserComma
     {
         _userManager = Dependency<IUserManager>();
 
-        _command = new RegisterUserCommand()
+        _command = new RegisterUserCommand
         {
             Username = "User1",
             Password = "Password123!",
             Email    = "user1@example.com"
         };
 
-        _user = new ApplicationUser()
+        _user = new ApplicationUser
         {
             UserName = "User1"
         };

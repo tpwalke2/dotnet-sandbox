@@ -9,7 +9,7 @@ public class CacheTests
     [Test]
     public void CacheMissGeneratesNewItem()
     {
-        var underTest = new Cache<string, CacheTestType>(s => new CacheTestType());
+        var underTest = new Cache<string, CacheTestType>(_ => new CacheTestType());
 
         var result = underTest.Get("input");
         Assert.That(result, Is.Not.Null);
@@ -20,7 +20,7 @@ public class CacheTests
     {
         var cacheValueGeneratorCalled = 0;
 
-        var underTest = new Cache<string, CacheTestType>(s =>
+        var underTest = new Cache<string, CacheTestType>(_ =>
         {
             cacheValueGeneratorCalled++;
             return new CacheTestType();
@@ -38,7 +38,7 @@ public class CacheTests
     {
         var cacheValueGeneratorCalled = 0;
 
-        var underTest = new Cache<string, CacheTestType>(s =>
+        var underTest = new Cache<string, CacheTestType>(_ =>
         {
             cacheValueGeneratorCalled++;
             return new CacheTestType();
@@ -57,7 +57,7 @@ public class CacheTests
     {
         var cacheValueGeneratorCalled = 0;
 
-        var underTest = new Cache<string, CacheTestType>(s =>
+        var underTest = new Cache<string, CacheTestType>(_ =>
         {
             cacheValueGeneratorCalled++;
             return new CacheTestType();
@@ -75,7 +75,7 @@ public class CacheTests
     [Test]
     public void InvalidateKeyDoesNotInvalidateAllKeys()
     {
-        var underTest = new Cache<string, CacheTestType>(s => new CacheTestType());
+        var underTest = new Cache<string, CacheTestType>(_ => new CacheTestType());
 
         var result1 = underTest.Get("input1");
         var result2 = underTest.Get("input2");
@@ -94,7 +94,7 @@ public class CacheTests
     [Test]
     public void InvalidateInvalidKey()
     {
-        var underTest = new Cache<string, CacheTestType>(s => new CacheTestType());
+        var underTest = new Cache<string, CacheTestType>(_ => new CacheTestType());
         Assert.That(() => underTest.Invalidate("input"), Throws.Nothing);
     }
 
@@ -103,7 +103,7 @@ public class CacheTests
     {
         var cacheValueGeneratorCalled = 0;
 
-        var underTest = new Cache<string, CacheTestType>(s =>
+        var underTest = new Cache<string, CacheTestType>(_ =>
         {
             cacheValueGeneratorCalled++;
             return cacheValueGeneratorCalled == 1 ? null : new CacheTestType();

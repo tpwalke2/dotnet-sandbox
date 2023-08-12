@@ -11,9 +11,9 @@ namespace Net7APIBoilerPlate.Tests.Plumbing.UnitTesting;
 [TestFixture]
 public abstract class UnitTestFixture<TUnderTest> where TUnderTest : class
 {
-    public TUnderTest UnderTest;
+    protected TUnderTest UnderTest;
 
-    protected ServiceProvider Provider;
+    private ServiceProvider _provider;
 
     [SetUp]
     public void BaseSetUp()
@@ -21,19 +21,19 @@ public abstract class UnitTestFixture<TUnderTest> where TUnderTest : class
         var services = new ServiceCollection();
         AddMockedDependencies(services);
         PreUnderTestResolve(services);
-        Provider  = services.BuildServiceProvider();
-        UnderTest = Provider.GetRequiredService<TUnderTest>();
+        _provider  = services.BuildServiceProvider();
+        UnderTest = _provider.GetRequiredService<TUnderTest>();
     }
 
     [TearDown]
     public void BaseTearDown()
     {
-        Provider.Dispose();
+        _provider.Dispose();
     }
 
     protected TDependency Dependency<TDependency>() where TDependency : class
     {
-        return Provider.GetService<TDependency>();
+        return _provider.GetService<TDependency>();
     }
 
     private static void AddMockedDependencies(IServiceCollection services)
@@ -41,7 +41,7 @@ public abstract class UnitTestFixture<TUnderTest> where TUnderTest : class
         TypeHelpers.GetConstructorParameterTypes<TUnderTest>()
                    .ForEach(t =>
                    {
-                       var mockedType = Substitute.For(new[] { t }, new object[] { });
+                       var mockedType = Substitute.For(new[] { t }, Array.Empty<object>());
                        services.TryAddScoped(t, _ => mockedType);
                    });
 

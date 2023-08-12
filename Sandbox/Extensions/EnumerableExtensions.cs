@@ -20,7 +20,7 @@ public static class EnumerableExtensions
     {
         if (other == null || source == null) return Enumerable.Empty<(TItem1, TItem2)>();
 
-        IEnumerable<(TItem1, TItem2)> seed = new (TItem1, TItem2)[] {};
+        IEnumerable<(TItem1, TItem2)> seed = Array.Empty<(TItem1, TItem2)>();
 
         return source.Aggregate(seed,
                                 (current, next) => current.Concat(other.Select(x => (next, x))));
