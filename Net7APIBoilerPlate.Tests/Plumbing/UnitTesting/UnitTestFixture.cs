@@ -1,9 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Moq;
 using Net7APIBoilerplate.Plumbing.Extensions;
 using Net7APIBoilerplate.Plumbing.Helpers;
+using NSubstitute;
 using NUnit.Framework;
+using System;
 
 namespace Net7APIBoilerPlate.Tests.Plumbing.UnitTesting;
 
@@ -30,9 +31,9 @@ public abstract class UnitTestFixture<TUnderTest> where TUnderTest : class
         Provider.Dispose();
     }
 
-    protected Mock<TDependency> Dependency<TDependency>() where TDependency : class
+    protected TDependency Dependency<TDependency>() where TDependency : class
     {
-        return Provider.GetService<Mock<TDependency>>();
+        return Provider.GetService<TDependency>();
     }
 
     private static void AddMockedDependencies(IServiceCollection services)
@@ -40,9 +41,8 @@ public abstract class UnitTestFixture<TUnderTest> where TUnderTest : class
         TypeHelpers.GetConstructorParameterTypes<TUnderTest>()
                    .ForEach(t =>
                    {
-                       var mockedType = typeof(Mock<>).MakeGenericType(t);
-                       services.TryAddScoped(mockedType);
-                       services.TryAddScoped(t, provider => ((Mock) provider.GetService(mockedType))?.Object);
+                       var mockedType = Substitute.For(new[] { t }, new object[] { });
+                       services.TryAddScoped(t, _ => mockedType);
                    });
 
         services.TryAddScoped(typeof(TUnderTest));

@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Identity;
-using Moq;
 using Net7APIBoilerplate.Authentication.Commands;
 using Net7APIBoilerplate.Authentication.Commands.Handlers;
 using Net7APIBoilerplate.Authentication.Data;
 using Net7APIBoilerplate.Authentication.Helpers;
 using Net7APIBoilerplate.Plumbing.Validation;
 using Net7APIBoilerPlate.Tests.Plumbing.UnitTesting;
+using NSubstitute;
 using NUnit.Framework;
 using System.Threading.Tasks;
 
@@ -14,7 +14,7 @@ namespace Net7APIBoilerPlate.Tests.Authentication.Commands.Handlers;
 [TestFixture]
 public class RegisterUserCommandHandlerTests : UnitTestFixture<RegisterUserCommandHandler>
 {
-    private Mock<IUserManager> _userManager;
+    private IUserManager _userManager;
     private RegisterUserCommand _command;
     private ApplicationUser _user;
         
@@ -40,8 +40,8 @@ public class RegisterUserCommandHandlerTests : UnitTestFixture<RegisterUserComma
     public void ShouldThrowExceptionIfUserExists()
     {
         _userManager
-            .Setup(x => x.FindByNameAsync("User1"))
-            .ReturnsAsync(_user);
+            .FindByNameAsync("User1")
+            .Returns(_user);
 
         Assert.ThrowsAsync<InvalidArgumentsException>(async () => await UnderTest.Handle(_command));
     }
@@ -50,15 +50,16 @@ public class RegisterUserCommandHandlerTests : UnitTestFixture<RegisterUserComma
     public async Task ShouldCreateUser()
     {
         ApplicationUser createdUser = null;
+        
+        _userManager
+            .FindByNameAsync("User1")
+            .Returns(default(ApplicationUser));
 
         _userManager
-            .Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), "Password123!"))
-            .Callback<ApplicationUser, string>((user, password) =>
-            {
-                createdUser = user;
-                Assert.That(password, Is.EqualTo("Password123!"));
-            })
-            .ReturnsAsync(IdentityResult.Success);
+            .CreateAsync(
+                Arg.Do<ApplicationUser>(user => createdUser = user),
+                "Password123!")
+            .Returns(IdentityResult.Success);
 
         var result = await UnderTest.Handle(_command);
             
@@ -72,8 +73,14 @@ public class RegisterUserCommandHandlerTests : UnitTestFixture<RegisterUserComma
     public async Task ShouldReturnErrorMessageIfCreateFails([Values] bool flag)
     {
         _userManager
-            .Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), "Password123!"))
-            .ReturnsAsync(IdentityResult.Failed());
+            .FindByNameAsync("User1")
+            .Returns(default(ApplicationUser));
+        
+        _userManager
+            .CreateAsync(
+                Arg.Any<ApplicationUser>(),
+                "Password123!")
+            .Returns(IdentityResult.Failed());
 
         var result = await UnderTest.Handle(_command);
             
