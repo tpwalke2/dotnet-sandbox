@@ -5,9 +5,9 @@ using Sandbox.Extensions;
 
 namespace Sandbox.Util;
 
-public class Cache<TKey, TValue> : ICache<TKey, TValue>
+public class Cache<TKey, TValue> : ICache<TKey, TValue> where TKey : notnull
 {
-    private readonly Func<TKey, TValue> _createNewItem;
+    private readonly Func<TKey, TValue?> _createNewItem;
     private readonly IDictionary<TKey, TValue> _items;
 
     /// <summary>
@@ -17,7 +17,7 @@ public class Cache<TKey, TValue> : ICache<TKey, TValue>
     /// </summary>
     /// <param name="createNewItem">Function that generates a new item on a cache miss</param>
     /// <param name="threadSafe">setting to indicate thread-safe requirement</param>
-    public Cache(Func<TKey, TValue> createNewItem, bool threadSafe = false)
+    public Cache(Func<TKey, TValue?> createNewItem, bool threadSafe = false)
     {
         _createNewItem = createNewItem;
         _items = threadSafe

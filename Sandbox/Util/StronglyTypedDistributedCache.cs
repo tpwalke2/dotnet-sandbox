@@ -19,7 +19,7 @@ public class StronglyTypedDistributedCache : IStronglyTypedDistributedCache
         await _cache.SetAsync(key, JsonSerializer.SerializeToUtf8Bytes(value), options);
     }
 
-    public async Task<TValue> GetAsync<TValue>(string key)
+    public async Task<TValue?> GetAsync<TValue>(string key)
     {
         var cacheValue = await _cache.GetAsync(key);
         return cacheValue == null

@@ -15,8 +15,8 @@ public static class EnumerableExtensions
     }
 
     public static IEnumerable<(TItem1, TItem2)> Combinate<TItem1, TItem2>(
-        this IEnumerable<TItem1> source,
-        IEnumerable<TItem2> other)
+        this IEnumerable<TItem1>? source,
+        IEnumerable<TItem2>? other)
     {
         if (other == null || source == null) return Enumerable.Empty<(TItem1, TItem2)>();
 

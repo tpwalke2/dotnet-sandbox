@@ -1,21 +1,20 @@
-using NUnit.Framework;
 using Sandbox.Util;
+using Xunit;
 
 namespace Sandbox.Tests.Util;
 
-[TestFixture]
 public class CacheTests
 {
-    [Test]
+    [Fact]
     public void CacheMissGeneratesNewItem()
     {
         var underTest = new Cache<string, CacheTestType>(_ => new CacheTestType());
 
         var result = underTest.Get("input");
-        Assert.That(result, Is.Not.Null);
+        Assert.NotNull(result);
     }
-        
-    [Test]
+
+    [Fact]
     public void CacheHitDoesNotGenerateNewItem()
     {
         var cacheValueGeneratorCalled = 0;
@@ -28,12 +27,12 @@ public class CacheTests
 
         var result1 = underTest.Get("input");
         var result2 = underTest.Get("input");
-        Assert.That(result1, Is.Not.Null);
-        Assert.That(result1, Is.SameAs(result2));
-        Assert.That(cacheValueGeneratorCalled, Is.EqualTo(1));
+        Assert.NotNull(result1);
+        Assert.Same(result2, result1);
+        Assert.Equal(1, cacheValueGeneratorCalled);
     }
-        
-    [Test]
+
+    [Fact]
     public void DifferentKeyGeneratesSeparateItem()
     {
         var cacheValueGeneratorCalled = 0;
@@ -46,13 +45,13 @@ public class CacheTests
 
         var result1 = underTest.Get("input1");
         var result2 = underTest.Get("input2");
-        Assert.That(result1, Is.Not.Null);
-        Assert.That(result2, Is.Not.Null);
-        Assert.That(result1, Is.Not.SameAs(result2));
-        Assert.That(cacheValueGeneratorCalled, Is.EqualTo(2));
+        Assert.NotNull(result1);
+        Assert.NotNull(result2);
+        Assert.NotSame(result2, result1);
+        Assert.Equal(2, cacheValueGeneratorCalled);
     }
 
-    [Test]
+    [Fact]
     public void CacheInvalidateShouldAllowGeneratingNewItem()
     {
         var cacheValueGeneratorCalled = 0;
@@ -66,13 +65,13 @@ public class CacheTests
         var result1 = underTest.Get("input");
         underTest.Invalidate();
         var result2 = underTest.Get("input");
-        Assert.That(result1, Is.Not.Null);
-        Assert.That(result2, Is.Not.Null);
-        Assert.That(result1, Is.Not.SameAs(result2));
-        Assert.That(cacheValueGeneratorCalled, Is.EqualTo(2));
+        Assert.NotNull(result1);
+        Assert.NotNull(result2);
+        Assert.NotSame(result2, result1);
+        Assert.Equal(2, cacheValueGeneratorCalled);
     }
-        
-    [Test]
+
+    [Fact]
     public void InvalidateKeyDoesNotInvalidateAllKeys()
     {
         var underTest = new Cache<string, CacheTestType>(_ => new CacheTestType());
@@ -82,23 +81,24 @@ public class CacheTests
         underTest.Invalidate("input1");
         var result3 = underTest.Get("input1");
         var result4 = underTest.Get("input2");
-            
-        Assert.That(result1, Is.Not.Null);
-        Assert.That(result2, Is.Not.Null);
-        Assert.That(result3, Is.Not.Null);
-        Assert.That(result4, Is.Not.Null);
-        Assert.That(result1, Is.Not.SameAs(result3));
-        Assert.That(result2, Is.SameAs(result4));
+
+        Assert.NotNull(result1);
+        Assert.NotNull(result2);
+        Assert.NotNull(result3);
+        Assert.NotNull(result4);
+        Assert.NotSame(result3, result1);
+        Assert.Same(result4, result2);
     }
 
-    [Test]
+    [Fact]
     public void InvalidateInvalidKey()
     {
         var underTest = new Cache<string, CacheTestType>(_ => new CacheTestType());
-        Assert.That(() => underTest.Invalidate("input"), Throws.Nothing);
+        var exception = Record.Exception(() => underTest.Invalidate("input"));
+        Assert.Null(exception);
     }
 
-    [Test]
+    [Fact]
     public void GeneratedNullShouldNotBeAddedToCache()
     {
         var cacheValueGeneratorCalled = 0;
@@ -111,10 +111,12 @@ public class CacheTests
 
         var result1 = underTest.Get("input");
         var result2 = underTest.Get("input");
-        Assert.That(result1, Is.Null);
-        Assert.That(result2, Is.Not.Null);
-        Assert.That(cacheValueGeneratorCalled, Is.EqualTo(2));
+        Assert.Null(result1);
+        Assert.NotNull(result2);
+        Assert.Equal(2, cacheValueGeneratorCalled);
     }
-        
-    public class CacheTestType { }
+
+    public class CacheTestType
+    {
+    }
 }
