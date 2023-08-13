@@ -63,7 +63,7 @@ public class LoginCommandHandler: ICommandHandler<LoginCommand, LoginResponse>
         var authClaims = new List<Claim>
         {
             new(ClaimTypes.Name, user.UserName),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
         authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
         return authClaims;

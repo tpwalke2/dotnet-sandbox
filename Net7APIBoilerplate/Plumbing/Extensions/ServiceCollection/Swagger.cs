@@ -18,7 +18,7 @@ public static class Swagger
                 Scheme = "Bearer",  
                 BearerFormat = "JWT",  
                 In = ParameterLocation.Header,  
-                Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",  
+                Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\""
             });  
             swaggerGenOptions.AddSecurityRequirement(new OpenApiSecurityRequirement  
             {  

@@ -33,8 +33,8 @@ public class EnumerableExtensionsTests
     [Test]
     public void Combinate_EmptySets()
     {
-        var list1 = new int[] { };
-        var list2 = new string[] {};
+        var list1 = System.Array.Empty<int>();
+        var list2 = System.Array.Empty<string>();
 
         var result = list1.Combinate(list2).ToList();
             
@@ -45,7 +45,7 @@ public class EnumerableExtensionsTests
     public void Combinate_EmptyOther()
     {
         var list1 = new[] {1, 2};
-        var list2 = new string[] {};
+        var list2 = System.Array.Empty<string>();
 
         var result = list1.Combinate(list2);
             

@@ -25,13 +25,13 @@ public class LoginCommandHandlerTests : UnitTestFixture<LoginCommandHandler>
     {
         _userManager = Dependency<IUserManager>();
 
-        _command = new LoginCommand()
+        _command = new LoginCommand
         {
             Username = "User1",
             Password = "Password123!"
         };
 
-        _user = new ApplicationUser()
+        _user = new ApplicationUser
         {
             UserName = "User1"
         };
