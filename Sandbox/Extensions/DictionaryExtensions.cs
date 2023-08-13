@@ -5,10 +5,10 @@ namespace Sandbox.Extensions;
 
 public static class DictionaryExtensions
 {
-    public static TValue TryGetOrDefault<TKey, TValue>(
-        this IDictionary<TKey, TValue> dictionary,
+    public static TValue? TryGetOrDefault<TKey, TValue>(
+        this IDictionary<TKey, TValue>? dictionary,
         TKey key,
-        TValue defaultValue = default)
+        TValue? defaultValue = default)
     {
         if (dictionary == null || key == null) return defaultValue;
 
@@ -16,7 +16,7 @@ public static class DictionaryExtensions
     }
         
     public static TValue TryGetOrDefault<TKey, TValue>(
-        this IDictionary<TKey, TValue> dictionary,
+        this IDictionary<TKey, TValue>? dictionary,
         TKey key,
         Func<TValue> createDefaultValue)
     {

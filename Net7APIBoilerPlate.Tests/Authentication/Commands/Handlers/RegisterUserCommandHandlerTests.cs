@@ -6,20 +6,18 @@ using Net7APIBoilerplate.Authentication.Helpers;
 using Net7APIBoilerplate.Plumbing.Validation;
 using Net7APIBoilerPlate.Tests.Plumbing.UnitTesting;
 using NSubstitute;
-using NUnit.Framework;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Net7APIBoilerPlate.Tests.Authentication.Commands.Handlers;
 
-[TestFixture]
 public class RegisterUserCommandHandlerTests : UnitTestFixture<RegisterUserCommandHandler>
 {
-    private IUserManager _userManager;
-    private RegisterUserCommand _command;
-    private ApplicationUser _user;
-        
-    [SetUp]
-    public void Setup()
+    private readonly IUserManager _userManager;
+    private readonly RegisterUserCommand _command;
+    private readonly ApplicationUser _user;
+
+    public RegisterUserCommandHandlerTests()
     {
         _userManager = Dependency<IUserManager>();
 
@@ -36,7 +34,7 @@ public class RegisterUserCommandHandlerTests : UnitTestFixture<RegisterUserComma
         };
     }
 
-    [Test]
+    [Fact]
     public void ShouldThrowExceptionIfUserExists()
     {
         _userManager
@@ -46,11 +44,11 @@ public class RegisterUserCommandHandlerTests : UnitTestFixture<RegisterUserComma
         Assert.ThrowsAsync<InvalidArgumentsException>(async () => await UnderTest.Handle(_command));
     }
 
-    [Test]
+    [Fact]
     public async Task ShouldCreateUser()
     {
         ApplicationUser createdUser = null;
-        
+
         _userManager
             .FindByNameAsync("User1")
             .Returns(default(ApplicationUser));
@@ -62,20 +60,20 @@ public class RegisterUserCommandHandlerTests : UnitTestFixture<RegisterUserComma
             .Returns(IdentityResult.Success);
 
         var result = await UnderTest.Handle(_command);
-            
-        Assert.That(result.Success, Is.True);
-        Assert.That(createdUser, Is.Not.Null);
-        Assert.That(createdUser?.Email, Is.EqualTo("user1@example.com"));
-        Assert.That(createdUser?.UserName, Is.EqualTo("User1"));
+
+        Assert.True(result.Success);
+        Assert.NotNull(createdUser);
+        Assert.Equal("user1@example.com", createdUser?.Email);
+        Assert.Equal("User1", createdUser?.UserName);
     }
 
-    [Test]
-    public async Task ShouldReturnErrorMessageIfCreateFails([Values] bool flag)
+    [Fact]
+    public async Task ShouldReturnErrorMessageIfCreateFails()
     {
         _userManager
             .FindByNameAsync("User1")
             .Returns(default(ApplicationUser));
-        
+
         _userManager
             .CreateAsync(
                 Arg.Any<ApplicationUser>(),
@@ -83,8 +81,9 @@ public class RegisterUserCommandHandlerTests : UnitTestFixture<RegisterUserComma
             .Returns(IdentityResult.Failed());
 
         var result = await UnderTest.Handle(_command);
-            
-        Assert.That(result.Success, Is.False);
-        Assert.That(result.ErrorMessage, Is.Not.Null.Or.Empty);
+
+        Assert.False(result.Success);
+        Assert.NotNull(result.ErrorMessage);
+        Assert.NotEmpty(result.ErrorMessage);
     }
 }

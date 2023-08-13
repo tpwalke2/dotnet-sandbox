@@ -10,7 +10,7 @@ public interface IStronglyTypedDistributedCache
         TValue value,
         DistributedCacheEntryOptions options);
 
-    Task<TValue> GetAsync<TValue>(string key);
+    Task<TValue?> GetAsync<TValue>(string key);
 
     Task InvalidateAsync(string key);
 }

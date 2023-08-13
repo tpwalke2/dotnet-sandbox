@@ -7,21 +7,19 @@ using Net7APIBoilerplate.Authentication.Helpers;
 using Net7APIBoilerplate.ConfigurationModels;
 using Net7APIBoilerPlate.Tests.Plumbing.UnitTesting;
 using NSubstitute;
-using NUnit.Framework;
 using System.Security.Authentication;
+using Xunit;
 
 namespace Net7APIBoilerPlate.Tests.Authentication.Commands.Handlers;
 
-[TestFixture]
 public class LoginCommandHandlerTests : UnitTestFixture<LoginCommandHandler>
 {
-    private IUserManager _userManager;
+    private readonly IUserManager _userManager;
     private JwtConfig _jwtConfig;
-    private LoginCommand _command;
-    private ApplicationUser _user;
+    private readonly LoginCommand _command;
+    private readonly ApplicationUser _user;
 
-    [SetUp]
-    public void Setup()
+    public LoginCommandHandlerTests()
     {
         _userManager = Dependency<IUserManager>();
 
@@ -43,7 +41,7 @@ public class LoginCommandHandlerTests : UnitTestFixture<LoginCommandHandler>
         services.TryAddScoped(_ => _jwtConfig);
     }
 
-    [Test]
+    [Fact]
     public void ShouldThrowExceptionIfUserNotFound()
     {
         _userManager
@@ -52,7 +50,7 @@ public class LoginCommandHandlerTests : UnitTestFixture<LoginCommandHandler>
         Assert.ThrowsAsync<InvalidCredentialException>(async () => await UnderTest.Handle(_command));
     }
         
-    [Test]
+    [Fact]
     public void ShouldThrowExceptionIfInvalidPassword()
     {
         _userManager
