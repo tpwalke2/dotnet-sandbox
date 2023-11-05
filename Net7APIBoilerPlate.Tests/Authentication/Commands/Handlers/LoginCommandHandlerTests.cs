@@ -47,7 +47,7 @@ public class LoginCommandHandlerTests : UnitTestFixture<LoginCommandHandler>
         _userManager
             .FindByNameAsync("User1")
             .Returns(default(ApplicationUser));
-        Assert.ThrowsAsync<InvalidCredentialException>(async () => await UnderTest.Handle(_command));
+        Assert.ThrowsAsync<InvalidCredentialException>(() => UnderTest.Handle(_command));
     }
         
     [Fact]
@@ -61,6 +61,6 @@ public class LoginCommandHandlerTests : UnitTestFixture<LoginCommandHandler>
             .CheckPasswordAsync(_user, "Password123!")
             .Returns(false);
             
-        Assert.ThrowsAsync<InvalidCredentialException>(async () => await UnderTest.Handle(_command));
+        Assert.ThrowsAsync<InvalidCredentialException>(() => UnderTest.Handle(_command));
     }
 }

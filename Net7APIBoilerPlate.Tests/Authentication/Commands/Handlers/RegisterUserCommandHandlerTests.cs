@@ -41,7 +41,7 @@ public class RegisterUserCommandHandlerTests : UnitTestFixture<RegisterUserComma
             .FindByNameAsync("User1")
             .Returns(_user);
 
-        Assert.ThrowsAsync<InvalidArgumentsException>(async () => await UnderTest.Handle(_command));
+        Assert.ThrowsAsync<InvalidArgumentsException>(() => UnderTest.Handle(_command));
     }
 
     [Fact]
