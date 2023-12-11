@@ -35,13 +35,13 @@ public class RegisterUserCommandHandlerTests : UnitTestFixture<RegisterUserComma
     }
 
     [Fact]
-    public void ShouldThrowExceptionIfUserExists()
+    public async Task ShouldThrowExceptionIfUserExists()
     {
         _userManager
             .FindByNameAsync("User1")
             .Returns(_user);
 
-        Assert.ThrowsAsync<InvalidArgumentsException>(() => UnderTest.Handle(_command));
+        await Assert.ThrowsAsync<InvalidArgumentsException>(() => UnderTest.Handle(_command));
     }
 
     [Fact]

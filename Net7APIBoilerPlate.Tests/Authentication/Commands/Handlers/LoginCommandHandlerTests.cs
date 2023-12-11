@@ -8,6 +8,7 @@ using Net7APIBoilerplate.ConfigurationModels;
 using Net7APIBoilerPlate.Tests.Plumbing.UnitTesting;
 using NSubstitute;
 using System.Security.Authentication;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Net7APIBoilerPlate.Tests.Authentication.Commands.Handlers;
@@ -42,16 +43,16 @@ public class LoginCommandHandlerTests : UnitTestFixture<LoginCommandHandler>
     }
 
     [Fact]
-    public void ShouldThrowExceptionIfUserNotFound()
+    public async Task ShouldThrowExceptionIfUserNotFound()
     {
         _userManager
             .FindByNameAsync("User1")
             .Returns(default(ApplicationUser));
-        Assert.ThrowsAsync<InvalidCredentialException>(() => UnderTest.Handle(_command));
+        await Assert.ThrowsAsync<InvalidCredentialException>(() => UnderTest.Handle(_command));
     }
         
     [Fact]
-    public void ShouldThrowExceptionIfInvalidPassword()
+    public async Task ShouldThrowExceptionIfInvalidPassword()
     {
         _userManager
             .FindByNameAsync("User1")
@@ -61,6 +62,6 @@ public class LoginCommandHandlerTests : UnitTestFixture<LoginCommandHandler>
             .CheckPasswordAsync(_user, "Password123!")
             .Returns(false);
             
-        Assert.ThrowsAsync<InvalidCredentialException>(() => UnderTest.Handle(_command));
+        await Assert.ThrowsAsync<InvalidCredentialException>(() => UnderTest.Handle(_command));
     }
 }
