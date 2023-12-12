@@ -10,8 +10,8 @@ public static class Configurations
 {
     public static IServiceCollection AddConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
-        if (services == null) throw new ArgumentNullException(nameof(services));
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(configuration);
 
         TypeHelpers.GetTypesWithAttribute<ConfigSectionAttribute>()
                    .ForEach(CreateRegisterMethod(services, configuration));
@@ -26,7 +26,7 @@ public static class Configurations
         return at =>
         {
             var (configSectionAttribute, configType) = at;
-            configuration.GetSection(configSectionAttribute.SectionRoot)?
+            configuration.GetSection(configSectionAttribute.SectionRoot)
                 .Pipe(configSection =>
                 {
                     if (configSection == null) return;

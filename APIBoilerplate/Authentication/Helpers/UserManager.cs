@@ -14,23 +14,23 @@ public class UserManager: IUserManager
         _userManager = userManager;
     }
         
-    public async Task<ApplicationUser> FindByNameAsync(string userName)
+    public Task<ApplicationUser> FindByNameAsync(string userName)
     {
-        return await _userManager.FindByNameAsync(userName);
+        return _userManager.FindByNameAsync(userName);
     }
 
-    public async Task<IList<string>> GetRolesAsync(ApplicationUser user)
+    public Task<IList<string>> GetRolesAsync(ApplicationUser user)
     {
-        return await _userManager.GetRolesAsync(user);
+        return _userManager.GetRolesAsync(user);
     }
 
-    public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
+    public Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
     {
-        return await _userManager.CheckPasswordAsync(user, password);
+        return _userManager.CheckPasswordAsync(user, password);
     }
 
-    public async Task<IdentityResult> CreateAsync(ApplicationUser user, string password)
+    public Task<IdentityResult> CreateAsync(ApplicationUser user, string password)
     {
-        return await _userManager.CreateAsync(user, password);
+        return _userManager.CreateAsync(user, password);
     }
 }

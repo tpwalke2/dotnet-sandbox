@@ -58,7 +58,7 @@ public class LoginCommandHandler: ICommandHandler<LoginCommand, LoginResponse>
         );
     }
 
-    private static IEnumerable<Claim> GetAuthClaims(ApplicationUser user, IEnumerable<string> userRoles)
+    private static List<Claim> GetAuthClaims(ApplicationUser user, IEnumerable<string> userRoles)
     {
         var authClaims = new List<Claim>
         {

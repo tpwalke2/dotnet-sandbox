@@ -17,6 +17,7 @@ public sealed class InvalidArgumentsException : Exception
     {
     }
 
+    [Obsolete("Obsolete")]
     private InvalidArgumentsException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }

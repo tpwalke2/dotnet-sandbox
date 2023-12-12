@@ -14,9 +14,9 @@ public class StronglyTypedDistributedCache : IStronglyTypedDistributedCache
         _cache = cache;
     }
         
-    public async Task SetAsync<TValue>(string key, TValue value, DistributedCacheEntryOptions options)
+    public Task SetAsync<TValue>(string key, TValue value, DistributedCacheEntryOptions options)
     {
-        await _cache.SetAsync(key, JsonSerializer.SerializeToUtf8Bytes(value), options);
+        return _cache.SetAsync(key, JsonSerializer.SerializeToUtf8Bytes(value), options);
     }
 
     public async Task<TValue?> GetAsync<TValue>(string key)
@@ -27,8 +27,8 @@ public class StronglyTypedDistributedCache : IStronglyTypedDistributedCache
             : JsonSerializer.Deserialize<TValue>(Encoding.UTF8.GetString(cacheValue));
     }
 
-    public async Task InvalidateAsync(string key)
+    public Task InvalidateAsync(string key)
     {
-        await _cache.RemoveAsync(key);
+        return _cache.RemoveAsync(key);
     }
 }
